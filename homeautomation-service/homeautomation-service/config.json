@@ -1,0 +1,79 @@
+[
+  {
+    "Name": "Weatherstation",
+    "Classification": 140,
+    "SaveRawData": false,
+    "Interval": 60,
+    "Topic": "Weatherstation"
+  },
+  {
+    "Name": "Fronius_GetMeterRealtimeData",
+    "Classification": 130,
+    "SaveRawData": true,
+    "Interval": 60,
+    "Topic": "Fronius_GetMeterRealtimeData"
+  },
+  {
+    "Name": "Strommessung_Beckhoff",
+    "Classification": 120,
+    "SaveRawData": true,
+    "Interval": 60,
+    "Topic": "Strommessung_Beckhoff"
+  },
+  {
+    "Name": "Strommessung_Waschmaschine",
+    "Classification": 100,
+    "SaveRawData": false,
+    "Interval": 60,
+    "Topic": "tele/sonoff_1/SENSOR"
+  },
+  {
+    "Name": "Strommessung_Trockner",
+    "Classification": 100,
+    "SaveRawData": false,
+    "Interval": 60,
+    "Topic": "tele/sonoff_2/SENSOR"
+  },
+  {
+    "Name": "Strommessung_Geschirrspueler",
+    "Classification": 100,
+    "SaveRawData": false,
+    "Interval": 60,
+    "Topic": "tele/sonoff_6/SENSOR"
+  },
+  {
+    "Name": "Strommessung_Wohnzimmer",
+    "Classification": 100,
+    "SaveRawData": false,
+    "Interval": 60,
+    "Topic": "tele/sonoff_3/SENSOR"
+  },
+  {
+    "Name": "Boilertemperatur",
+    "Classification": 102,
+    "SaveRawData": false,
+    "Interval": 360,
+    "Topic": "tele/sonoff_5/SENSOR"
+  },
+  {
+    "Name": "Bodentemperatur_Keller",
+    "Classification": 101,
+    "SaveRawData": false,
+    "Interval": 900,
+    "Topic": "tele/sonoff_4/SENSOR"
+  },
+  {
+    "Name": "Bodentemperatur_Erdgeschoss",
+    "Classification": 101,
+    "SaveRawData": false,
+    "Interval": 900,
+    "Topic": "tele/sonoff_11/SENSOR"
+  },
+  {
+    "Name": "Bodentemperatur_Obergeschoss",
+    "Classification": 101,
+    "SaveRawData": false,
+    "Interval": 900,
+    "Topic": "tele/sonoff_12/SENSOR"
+  }
+]
