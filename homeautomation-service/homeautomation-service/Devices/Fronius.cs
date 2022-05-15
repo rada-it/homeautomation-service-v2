@@ -35,25 +35,27 @@ namespace homeautomation_service.Devices
             return new{ FroniusTotal = _froniusSmartmeter.GetRawData(), FroniusDetails = _froniusSmartmeter1.GetRawData() };
         }
 
+        private double _consumption = 0;
+        private double _production = 0;
         public PowerConsumptionProductionSplice CalcConsumptionProductionData()
         {
             if(_froniusSmartmeter1 != null)
             {
-                double consumption = _froniusSmartmeter1.GetCurrentConsumption();
-                double production = _froniusSmartmeter.GetCurrentProduction();
+                _consumption = _froniusSmartmeter1.GetCurrentConsumption();
+                _production = _froniusSmartmeter.GetCurrentProduction();
 
-                if (consumption != 0)
+                if (_consumption != 0)
                 {
-                    if (consumption > 0)
+                    if (_consumption > 0)
                     {
                         // Netzbezug
                         return new PowerConsumptionProductionSplice()
                         {
-                            Consumption = consumption + production,
-                            Production = production,
-                            ProductionInternalUsage = production,
+                            Consumption = _consumption + _production,
+                            Production = _production,
+                            ProductionInternalUsage = _production,
                             FeedIn = 0,
-                            NetSupply = consumption
+                            NetSupply = _consumption
                         };
                     }
                     else
@@ -61,10 +63,10 @@ namespace homeautomation_service.Devices
                         // Netzeinspeisung
                         return new PowerConsumptionProductionSplice()
                         {
-                            Consumption = production + consumption,
-                            Production = production,
-                            ProductionInternalUsage = production + consumption,
-                            FeedIn = -consumption,
+                            Consumption = _production + _consumption,
+                            Production = _production,
+                            ProductionInternalUsage = _production + _consumption,
+                            FeedIn = -_consumption,
                             NetSupply = 0
                         };
                     }
@@ -83,7 +85,11 @@ namespace homeautomation_service.Devices
 
         public override void SendMqttData()
         {
-            
+            if (_froniusSmartmeter != null && _mqttInterface != null && Topic != "" && Topic != null)
+            {
+                // send mqtt topics
+                _mqttInterface.PublishTopic(Name, "Production", _production);
+            }
         }
     }
 }

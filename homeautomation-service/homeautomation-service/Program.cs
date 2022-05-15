@@ -5,7 +5,9 @@ using Google.Cloud.Firestore;
 using homeautomation_service;
 using homeautomation_service.Devices;
 using homeautomation_service.Helper;
+using System.Globalization;
 
+Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
 Console.WriteLine("Starting HomeAutomation Service");
 
@@ -14,5 +16,7 @@ Configuration configuration = new(firebase);
 MQTT client = new(configuration);
 configuration.HandOverMqttInterface(client);
 
+//File.WriteAllText("log.txt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": Service started");
 Console.WriteLine("Init ready");
-Console.ReadLine();
+
+await Task.Delay(-1);

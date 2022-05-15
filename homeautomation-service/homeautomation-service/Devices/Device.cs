@@ -42,10 +42,14 @@ namespace homeautomation_service.Devices
         public string Name { get; set; }
         [JsonProperty("SaveRawData")]
         public bool SaveRawData { get; set; }
+        [JsonProperty("SaveRawDataEveryXTimes")]
+        public int SaveRawDataEveryXTimes { get; set; }
         [JsonProperty("Classification")]
         public int Classification { get; set; }
         [JsonProperty("Interval")]
         public int Interval { get; set; }
+        [JsonProperty("SaveInterval")]
+        public int SaveInterval { get; set; }
         [JsonProperty("Topic")]
         public string Topic { get; set; }
 
@@ -62,6 +66,7 @@ namespace homeautomation_service.Devices
                 Name = device.Name;
                 Classification = device.Classification;
                 Interval = device.Interval;
+                SaveInterval = device.SaveInterval;
                 Topic = device.Topic;
                 SaveRawData = device.SaveRawData;
 
@@ -69,13 +74,13 @@ namespace homeautomation_service.Devices
                 _saveData = saveData;
             }
 
-            if (Interval != null)
+            if (SaveInterval != null)
             {
-                if (Interval < 60)
+                if (SaveInterval < 60)
                 {
-                    Interval = 60;
+                    SaveInterval = 60;
                 }
-                _stateTimer = new(SendData, null, 0, 1000 * Interval);
+                _stateTimer = new(SendData, null, 0, 1000 * SaveInterval);
             }
         }
         public void HandoverMqttInterface(IMQTTPublisher mqttInterface)
@@ -85,61 +90,46 @@ namespace homeautomation_service.Devices
 
         private object _oldData;
         private DateTime _lastTimeDataSent;
-
+        private int _rawDataSendCounter = 0;
+        
         public void SendData(object state)
         {
             // calc
             var calcData = CalcData();
             var rawData = GetRawData();
-            var newData = false;
 
             if (!(calcData is bool) && calcData != null && Topic != "")
             {
                 if (_oldData == null)
                 {
                     // new data
-                    Console.WriteLine(Name + "(" + Topic + "): send calced data to DB");
-                    Console.WriteLine(calcData);
-
                     _saveData.InsertData(Name, calcData);
-                    if (SaveRawData)
+                    _rawDataSendCounter++;
+                    if (SaveRawData && _rawDataSendCounter >= SaveRawDataEveryXTimes)
                     {
                         _saveData.InsertRawData(Name, rawData);
+                        _rawDataSendCounter = 0;
                     }
-                    newData = true;
                     _lastTimeDataSent = DateTime.Now;
                 }
                 else if ((JsonConvert.SerializeObject(calcData) != JsonConvert.SerializeObject(_oldData)) 
                     || _lastTimeDataSent < DateTime.Now.AddMinutes(60))
                 {
                     // new data
-                    Console.WriteLine(Name + "(" + Topic + "): send calced data to DB");
-                    Console.WriteLine(calcData);
-
                     _saveData.InsertData(Name, calcData);
-                    if (SaveRawData)
+                    _rawDataSendCounter++;
+                    if (SaveRawData && _rawDataSendCounter >= SaveRawDataEveryXTimes)
                     {
                         _saveData.InsertRawData(Name, rawData);
+                        _rawDataSendCounter = 0;
                     }
-                    newData = true;
                     _lastTimeDataSent = DateTime.Now;
-                }
-                else
-                {
-                    Console.WriteLine(Name + "(" + Topic + "): data equal");
                 }
                 _oldData = calcData;
             }
-
             SendMqttData();
-            /*if (newData && _mqttInterface != null && Topic != "" && Topic != null)
-            {
-                // send mqtt topics
-                _mqttInterface.PublishObject(Name,calcData);
-                _mqttInterface.PublishObject(Name,rawData);
-            }*/
         }
-
+        
         public abstract object CalcData();
         public abstract object GetRawData();
         public abstract void SendMqttData();

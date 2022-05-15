@@ -13,6 +13,7 @@ namespace homeautomation_service.Helper
 
         public Parser(object dataObj, int intervalSec, string url)
         {
+
             _dataObj = dataObj;
             _interval = intervalSec;
             _url = url;

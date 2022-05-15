@@ -55,7 +55,7 @@ namespace homeautomation_service.Devices
             double measurementDays = (DateTime.Now - _dataset.ENERGY.TotalStartTime).TotalDays;
             if (measurementDays > 0)
             {
-                double yearlyConsumption = _dataset.ENERGY.Total / measurementDays * 365;
+                double yearlyConsumption = Math.Round(_dataset.ENERGY.Total / measurementDays * 365,1);
                 // send mqtt topics
                 _mqttInterface.PublishTopic(Name, "YearlyConsumption", yearlyConsumption);
             }

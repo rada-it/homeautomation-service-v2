@@ -81,9 +81,9 @@ namespace homeautomation_service
             if(Devices.Any(x => x.Topic == topic))
             {
                 Devices.First(x => x.Topic == topic).Data = data;
-                Console.WriteLine("Date received");
-                Console.WriteLine(topic);
-                Console.WriteLine(data);
+                //Console.WriteLine("Date received");
+                //Console.WriteLine(topic);
+                //Console.WriteLine(data);
             }
         }
         

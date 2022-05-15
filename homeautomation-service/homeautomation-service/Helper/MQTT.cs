@@ -3,20 +3,18 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace homeautomation_service
 {
     internal class MQTT : IMQTTPublisher
     {
-
+        //private static object _lockObj;
         private MqttFactory _mqttFactory = new MqttFactory();
+
         private IMqttClient _mqttClient;
         private IGetDevice _devices;
+        private bool _lockInit = false;
 
         public MQTT(IGetDevice devices)
         {
@@ -25,19 +23,22 @@ namespace homeautomation_service
 
         private async Task InitMQTT(IGetDevice devices)
         {
-            _devices = devices;
-            _mqttClient = _mqttFactory.CreateMqttClient();
-            
-                var mqttClientOptions = new MqttClientOptionsBuilder().WithTcpServer("192.168.0.25", 1883).WithClientId("ServiceV2").WithCredentials("openhabian", "mqttredlham123").WithCleanSession(true).Build();
+            if (!_lockInit)
+            {
+                _lockInit = true;
+                _devices = devices;
+                _mqttClient = _mqttFactory.CreateMqttClient();
+
+                var mqttClientOptions = new MqttClientOptionsBuilder().WithTcpServer("192.168.0.195", 1883).WithClientId("ServiceV2").WithCredentials("openhabian", "mqttredlham123").WithCleanSession(true).Build();
                 var response = await _mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
 
-            // Start Watcher
+                // Start Watcher
                 _mqttClient.UseApplicationMessageReceivedHandler(e =>
                 {
 #if DEBUG
-                    Console.WriteLine("----------------------------------------------------------------");
-                    Console.WriteLine($"Topic={e.ApplicationMessage.Topic}");
-                    Console.WriteLine($"Payload={Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
+                    //Console.WriteLine("----------------------------------------------------------------");
+                    //Console.WriteLine($"Topic={e.ApplicationMessage.Topic}");
+                    //Console.WriteLine($"Payload={Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
 #endif
                     // get device
                     if (devices.DeviceExisting(e.ApplicationMessage.Topic))
@@ -51,7 +52,7 @@ namespace homeautomation_service
                             ;
                         }
                     }
-                    Console.WriteLine("----------------------------------------------------------------");
+                    //Console.WriteLine("----------------------------------------------------------------");
                 });
 
                 Console.WriteLine("The MQTT client is connected.");
@@ -68,7 +69,8 @@ namespace homeautomation_service
                 }
 
                 Console.WriteLine("All topics subscribed.");
-                Console.ReadLine();
+                _lockInit = false;
+            }
         }
 
         private async void Publish(string topic, dynamic content)
@@ -84,6 +86,10 @@ namespace homeautomation_service
             catch (Exception ex)
             {
                 Thread.Sleep(2000);
+                /*lock (_lockObj)
+                {
+                    File.WriteAllText("log.txt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ": "+ ex.ToString());
+                }*/
                 if (ex.ToString().Contains("is not connected") || ex.ToString().Contains("Eine bestehende Verbindung"))
                 {
                     InitMQTT(_devices);
@@ -92,9 +98,7 @@ namespace homeautomation_service
                 {
                     ;
                 }
-                
             }
-            
         }
 
         public void PublishTopic(string name, string topic, dynamic content)
@@ -102,6 +106,7 @@ namespace homeautomation_service
             var topicName = name + '_' + topic;
             Publish(topicName, content);
         }
+
         /*public void PublishObject(string name, dynamic content)
         {
             if (content != null && name != null && name != "")
@@ -134,9 +139,11 @@ namespace homeautomation_service
     {
         public string Name { get; set; }
     }
+
     public interface IMQTTPublisher
     {
         public void PublishTopic(string name, string topic, dynamic content);
+
         //public void PublishObject(string name, object data);
     }
 }
