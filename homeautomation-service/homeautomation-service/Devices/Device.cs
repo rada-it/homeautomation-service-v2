@@ -113,7 +113,7 @@ namespace homeautomation_service.Devices
                     _lastTimeDataSent = DateTime.Now;
                 }
                 else if ((JsonConvert.SerializeObject(calcData) != JsonConvert.SerializeObject(_oldData)) 
-                    || _lastTimeDataSent < DateTime.Now.AddMinutes(60))
+                    || _lastTimeDataSent < DateTime.Now.AddMinutes(60*6))
                 {
                     // new data
                     _saveData.InsertData(Name, calcData);

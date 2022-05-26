@@ -5,16 +5,16 @@
     "SaveRawData": false,
     "SaveRawDataEveryXTimes": 1,
     "Interval": 60,
-    "SaveInterval": 900,
+    "SaveInterval": 3600,
     "Topic": "Weatherstation"
   },
   {
     "Name": "Fronius_GetMeterRealtimeData",
     "Classification": 130,
     "SaveRawData": true,
-    "SaveRawDataEveryXTimes": 15,
+    "SaveRawDataEveryXTimes": 12,
     "Interval": 60,
-    "SaveInterval": 60,
+    "SaveInterval": 360,
     "Topic": "Fronius_GetMeterRealtimeData"
   },
   {
@@ -59,7 +59,7 @@
     "SaveRawData": false,
     "SaveRawDataEveryXTimes": 1,
     "Interval": 60,
-    "SaveInterval": 360,
+    "SaveInterval": 900,
     "Topic": "tele/sonoff_3/SENSOR"
   },
   {
