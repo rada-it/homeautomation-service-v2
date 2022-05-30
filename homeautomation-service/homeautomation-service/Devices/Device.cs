@@ -42,8 +42,6 @@ namespace homeautomation_service.Devices
         public string Name { get; set; }
         [JsonProperty("SaveRawData")]
         public bool SaveRawData { get; set; }
-        [JsonProperty("SaveRawDataEveryXTimes")]
-        public int SaveRawDataEveryXTimes { get; set; }
         [JsonProperty("Classification")]
         public int Classification { get; set; }
         [JsonProperty("Interval")]
@@ -52,6 +50,8 @@ namespace homeautomation_service.Devices
         public int SaveInterval { get; set; }
         [JsonProperty("Topic")]
         public string Topic { get; set; }
+        [JsonProperty("SaveRawDataEveryCycle")]
+        public int SaveRawDataEveryCycle { get; set; }
 
         public virtual dynamic Data { get; set; }
 
@@ -69,19 +69,17 @@ namespace homeautomation_service.Devices
                 SaveInterval = device.SaveInterval;
                 Topic = device.Topic;
                 SaveRawData = device.SaveRawData;
+                SaveRawDataEveryCycle = device.SaveRawDataEveryCycle;
 
                 //_mqttInterface = mqttInterface;
                 _saveData = saveData;
             }
 
-            if (SaveInterval != null)
+            if (SaveInterval < 60)
             {
-                if (SaveInterval < 60)
-                {
-                    SaveInterval = 60;
-                }
-                _stateTimer = new(SendData, null, 0, 1000 * SaveInterval);
+                SaveInterval = 60;
             }
+            _stateTimer = new(SendData, null, 0, 1000 * SaveInterval);
         }
         public void HandoverMqttInterface(IMQTTPublisher mqttInterface)
         {
@@ -105,7 +103,7 @@ namespace homeautomation_service.Devices
                     // new data
                     _saveData.InsertData(Name, calcData);
                     _rawDataSendCounter++;
-                    if (SaveRawData && _rawDataSendCounter >= SaveRawDataEveryXTimes)
+                    if (SaveRawData && _rawDataSendCounter >= SaveRawDataEveryCycle)
                     {
                         _saveData.InsertRawData(Name, rawData);
                         _rawDataSendCounter = 0;
@@ -118,7 +116,7 @@ namespace homeautomation_service.Devices
                     // new data
                     _saveData.InsertData(Name, calcData);
                     _rawDataSendCounter++;
-                    if (SaveRawData && _rawDataSendCounter >= SaveRawDataEveryXTimes)
+                    if (SaveRawData && _rawDataSendCounter >= SaveRawDataEveryCycle)
                     {
                         _saveData.InsertRawData(Name, rawData);
                         _rawDataSendCounter = 0;

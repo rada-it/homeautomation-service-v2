@@ -3,7 +3,8 @@
     "Name": "Weatherstation",
     "Classification": 140,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 60,
     "SaveInterval": 3600,
     "Topic": "Weatherstation"
@@ -12,7 +13,8 @@
     "Name": "Fronius_GetMeterRealtimeData",
     "Classification": 130,
     "SaveRawData": true,
-    "SaveRawDataEveryXTimes": 12,
+    "SaveRawDataEveryCycle": 12,
+    "RawDataCycle": 1,
     "Interval": 60,
     "SaveInterval": 360,
     "Topic": "Fronius_GetMeterRealtimeData"
@@ -21,7 +23,8 @@
     "Name": "Strommessung_Beckhoff",
     "Classification": 120,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 3600,
     "SaveInterval": 3600,
     "Topic": "Strommessung_Beckhoff"
@@ -30,7 +33,8 @@
     "Name": "Strommessung_Waschmaschine",
     "Classification": 100,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 60,
     "SaveInterval": 360,
     "Topic": "tele/sonoff_1/SENSOR"
@@ -39,7 +43,8 @@
     "Name": "Strommessung_Trockner",
     "Classification": 100,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 60,
     "SaveInterval": 360,
     "Topic": "tele/sonoff_2/SENSOR"
@@ -48,7 +53,8 @@
     "Name": "Strommessung_Geschirrspueler",
     "Classification": 100,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 60,
     "SaveInterval": 360,
     "Topic": "tele/sonoff_6/SENSOR"
@@ -57,7 +63,8 @@
     "Name": "Strommessung_Wohnzimmer",
     "Classification": 100,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 60,
     "SaveInterval": 900,
     "Topic": "tele/sonoff_3/SENSOR"
@@ -66,7 +73,8 @@
     "Name": "Boilertemperatur",
     "Classification": 102,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 900,
     "SaveInterval": 900,
     "Topic": "tele/sonoff_5/SENSOR"
@@ -75,7 +83,8 @@
     "Name": "Bodentemperatur_Keller",
     "Classification": 101,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 3600,
     "SaveInterval": 14400,
     "Topic": "tele/sonoff_4/SENSOR"
@@ -84,7 +93,8 @@
     "Name": "Bodentemperatur_Erdgeschoss",
     "Classification": 101,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 3600,
     "SaveInterval": 14400,
     "Topic": "tele/sonoff_11/SENSOR"
@@ -93,7 +103,8 @@
     "Name": "Bodentemperatur_Obergeschoss",
     "Classification": 101,
     "SaveRawData": false,
-    "SaveRawDataEveryXTimes": 1,
+    "SaveRawDataEveryCycle": 1,
+    "RawDataCycle": 1,
     "Interval": 3600,
     "SaveInterval": 14400,
     "Topic": "tele/sonoff_12/SENSOR"
